@@ -3,9 +3,6 @@ with: http://tillbergmann.com/blog/python-gradient-descent.html
 """
 
 import matplotlib.pyplot as plt
-import math
-import random
-import numpy as np
 
 
 def simple_function(x_list):
@@ -24,7 +21,6 @@ def gradient_ascent(x_list):
     alpha = 0.001
     precision = 0.001
     old_x_max = 0
-    x_max = random.randrange(x_list[0], x_list[len(x_list) - 1], 0.1)
     x_max = min(x_list)
     maxs = []
     loss = []
@@ -36,7 +32,7 @@ def gradient_ascent(x_list):
         x_max = old_x_max - move
         loss.append((3 - x_max) ** 2)
         maxs.append(x_max)
-
+    return max(maxs)
 
 
 x = [-2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
@@ -44,3 +40,5 @@ y = simple_function(x)
 
 plt.plot(x, y, linewidth=2)
 plt.show()
+
+print(gradient_ascent(x))
