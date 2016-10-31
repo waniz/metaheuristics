@@ -27,5 +27,6 @@ def simple_factorial(number):
         return 2
     return number * simple_factorial(number - 1)
 
-print(fib(6))
+
+print(fib(100))
 print(simple_factorial(100))
