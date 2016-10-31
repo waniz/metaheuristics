@@ -2,21 +2,21 @@ from data_structures.indirected_graph import IndirectedGraph
 
 
 def bfs(graph, start, end):
-    paths = []
     if start not in graph.vertexes():
         return None
-    visited_node, queue = set(), [start]
+    visited_nodes, queue = set(), [start]
     while queue:
         path = queue.pop(0)
         node = path[-1]
         if node == end:
             return path
-        for adjacent in graph.adjacent_nodes(node):
-            new_path = list(path)
-            new_path.append(adjacent)
-            queue.append(new_path)
-
-    return visited_node
+        elif node not in visited_nodes:
+            for adjacent in graph.adjacent_nodes(node):
+                new_path = list(path)
+                new_path.append(adjacent)
+                queue.append(new_path)
+            visited_nodes.add(node)
+    return visited_nodes
 
 
 graph = IndirectedGraph()
