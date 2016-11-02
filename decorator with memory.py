@@ -14,9 +14,19 @@ def memo(func):
 
 @memo
 def fib(i):
+    # O(2^n/2)
     if i < 2:
         return 1
     return fib(i - 1) + fib(i - 2)
+
+
+def fib_modify(i):
+    # O(n)
+    if i <= 1:
+        return i, 0
+    else:
+        (a, b) = fib_modify(i - 1)
+    return (a + b), a
 
 
 @memo
@@ -29,4 +39,5 @@ def simple_factorial(number):
 
 
 print(fib(100))
+print(fib_modify(100)[0] + fib_modify(100)[1])
 print(simple_factorial(100))
