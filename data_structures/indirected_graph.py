@@ -20,7 +20,8 @@ class IndirectedGraph:
         self.__edges_count += 1
 
     def adjacent_nodes(self, source):
-        return set(self.__adjacent[source])
+        return self.__adjacent[source]
+        # return set(self.__adjacent[source])
 
     def vertex_count(self):
         return self.__vertex_count
@@ -36,17 +37,5 @@ class IndirectedGraph:
 
     def vertexes(self):
         return self.__adjacent.keys()
-
-
-# graph = IndirectedGraph()
-# graph.add_connection('A', 'C')
-# graph.add_connection('A', 'D')
-# graph.add_connection('B', 'D')
-#
-# print(graph.vertex_count(), graph.edges_count())
-# print(graph.adjacent_nodes('B'))
-# print(graph.adjacent_nodes('D'))
-# print(graph.vertex_degree('C'))
-# print(graph.vertexes())
 
 
