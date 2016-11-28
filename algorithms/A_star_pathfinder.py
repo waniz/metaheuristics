@@ -2,7 +2,11 @@
 http://gabrielgambetta.com/path2.html
 """
 
-import random
+import math
+import matplotlib.pyplot as plt
+import time
+
+plt.style.use('ggplot')
 
 
 class IndirectedGraph:
@@ -58,16 +62,16 @@ class AStar:
     FIXED_COST = 1
 
     def __init__(self, start, end, data):
-        self.open_set = [start]
+        self.open_set = [start]          # reachable
         self.closed_set = []
-        self.visited = []
+        self.visited = []                # explored
         self.start_node = start
         self.goal_node = end
         self.data_graph = data
-        self.cost[start] = 0
 
         for node in data.vertexes():
             self.cost[node] = float('inf')
+        self.cost[start] = 0
 
     def search(self):
         while self.open_set:
@@ -84,15 +88,36 @@ class AStar:
                 if neighbor in self.visited:
                     continue
                 if self.cost[node] + self.FIXED_COST < self.cost[neighbor]:
-
-                # p1
-                if neighbor not in self.open_set:
                     self.parent[neighbor] = node
+                    self.cost[neighbor] = self.cost[node] + self.FIXED_COST
+                if neighbor not in self.open_set:
                     self.open_set.append(neighbor)
         return None
 
     def __choose_node(self):
-        return random.choice(self.open_set)
+        min_cost = float('inf')
+        best_node = None
+        for node in self.open_set:
+            cost_start_to_node = self.cost[node]
+            cost_node_to_goal = self.__estimate_distance(node)
+            total_cost = cost_start_to_node + cost_node_to_goal
+
+            if min_cost > total_cost:
+                min_cost = total_cost
+                best_node = node
+        return best_node
+
+    def __estimate_distance(self, node, distance_method='manhattan'):
+        node_y, node_x = node.split('_')
+        goal_y, goal_x = self.goal_node.split('_')
+        node_x, node_y, goal_x, goal_y = int(node_x), int(node_y), int(goal_x), int(goal_y)
+
+        distance = float('inf')
+        if distance_method == 'manhattan':
+            distance = abs(node_x - goal_x) + abs(node_y - goal_y)
+        elif distance_method == 'sqrt':
+            distance = math.sqrt((node_x - goal_x) ** 2 + (node_y - goal_y) ** 2)
+        return distance
 
     def __build_path(self, to_node):
         path = []
@@ -101,30 +126,65 @@ class AStar:
             if to_node == self.start_node:
                 return path
             to_node = self.parent[to_node]
-
         return path
 
+
 # main
+def obstacle_in_node(node):
+    obstacles = [[10, 10], [15, 15], [20, 20], [20, 25]]
+    if node in obstacles:
+        return True
+    return False
+
+
+map_size = 400
+step = 1
+
+start_graph = time.time()
 graph = IndirectedGraph()
+for y_line in range(0, map_size, step):
+    for x_line in range(0, map_size - step, step):
+        if not obstacle_in_node([y_line, x_line + step]):
+            node_1 = '%s_%s' % ((y_line + step // 2), x_line + step // 2)
+            node_2 = '%s_%s' % ((y_line + step // 2), x_line + step // 2 + step)
+            graph.add_connection(node_1, node_2)
 
-graph.add_connection('A', 'B')
-graph.add_connection('B', 'C')
-graph.add_connection('A', 'F')
-graph.add_connection('F', 'K')
-graph.add_connection('K', 'L')
-graph.add_connection('L', 'Q')
-graph.add_connection('Q', 'V')
-graph.add_connection('V', 'W')
-graph.add_connection('W', 'X')
-graph.add_connection('X', 'Y')
-graph.add_connection('L', 'M')
-graph.add_connection('M', 'N')
-graph.add_connection('N', 'O')
-graph.add_connection('O', 'T')
-graph.add_connection('T', 'Y')
-graph.add_connection('O', 'J')
-graph.add_connection('J', 'E')
+print('   1L: %s' % round((time.time() - start_graph), 5))
 
-a_star = AStar('A', 'T', graph)
-print(a_star.search())
+for y_line in range(0, map_size - step, step):
+    for x_line in range(0, map_size, step):
+        if not obstacle_in_node([y_line + step, x_line]):
+            node_1 = '%s_%s' % ((y_line + step // 2), x_line + step // 2)
+            node_2 = '%s_%s' % ((y_line + step // 2 + step), x_line + step // 2 + step)
+            graph.add_connection(node_1, node_2)
+
+print('   2L: %s' % round((time.time() - start_graph), 5))
+
+for y_line in range(0, map_size - step, step):
+    for x_line in range(0, map_size - step, step):
+        if not obstacle_in_node([y_line + step, x_line + step]):
+            node_1 = '%s_%s' % ((y_line + step // 2), x_line + step // 2)
+            node_2 = '%s_%s' % ((y_line + step // 2 + step), x_line + step // 2 + step)
+            graph.add_connection(node_1, node_2)
+
+print('   3L: %s' % round((time.time() - start_graph), 5))
+
+for y_line in range(0, map_size - step, step):
+    for x_line in range(step, map_size, step):
+        if not obstacle_in_node([y_line - step, x_line - step]):
+            node_1 = '%s_%s' % ((y_line + step // 2), x_line + step // 2)
+            node_2 = '%s_%s' % ((y_line + step // 2 - step), x_line + step // 2 - step)
+            graph.add_connection(node_1, node_2)
+
+print('   4L: %s' % round((time.time() - start_graph), 5))
+
+print('Graph: %s' % round((time.time() - start_graph), 5))
+
+start_a = time.time()
+a_star = AStar('5_5', '55_75', graph)
+path = a_star.search()
+
+print('A*   : %s' % round((time.time() - start_a), 5))
+print(path)
+
 
