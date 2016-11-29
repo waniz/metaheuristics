@@ -31,7 +31,7 @@ def bfs(graph_to_search, start, end):
                 new_path.append(current_neighbour)
                 queue.append(new_path)
 
-                #No need to visit other neighbour. Return at once
+                # No need to visit other neighbour. Return at once
                 if current_neighbour == end:
                     return new_path
 

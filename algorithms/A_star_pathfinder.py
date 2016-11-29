@@ -21,14 +21,14 @@ class IndirectedGraph:
             self.__adjacent[source].append(destination)
         else:
             self.__adjacent[source] = [destination]
-            self.__vertex_count += 1
+            # self.__vertex_count += 1
 
         if destination in self.__adjacent:
             self.__adjacent[destination].append(source)
         else:
             self.__adjacent[destination] = [source]
-            self.__vertex_count += 1
-        self.__edges_count += 1
+        #     self.__vertex_count += 1
+        # self.__edges_count += 1
 
     def adjacent_nodes(self, source):
         return set(self.__adjacent[source])
@@ -38,6 +38,52 @@ class IndirectedGraph:
 
     def edges_count(self):
         return self.__edges_count
+
+    def vertex_degree(self, source):
+        if source in self.__adjacent:
+            return len(self.__adjacent[source])
+        else:
+            return None
+
+    def vertexes(self):
+        return self.__adjacent.keys()
+
+
+class Node:
+    coord_x = None
+    coord_y = None
+    cost = None
+
+    def __init__(self, y, x, cost=1):
+        self.coord_x = x
+        self.coord_y = y
+        self.cost = cost
+
+    def x(self):
+        return self.x
+
+    def y(self):
+        return self.y
+
+
+class IndirectedGraphInt:
+
+    def __init__(self):
+        self.__adjacent = {}
+
+    def add_connection(self, source, destination):
+        if source in self.__adjacent:
+            self.__adjacent[source].append(destination)
+        else:
+            self.__adjacent[source] = [destination]
+
+        if destination in self.__adjacent:
+            self.__adjacent[destination].append(source)
+        else:
+            self.__adjacent[destination] = [source]
+
+    def adjacent_nodes(self, source):
+        return set(self.__adjacent[source])
 
     def vertex_degree(self, source):
         if source in self.__adjacent:
@@ -129,6 +175,24 @@ class AStar:
         return path
 
 
+def bfs2(graph_to_search, start, end):
+    queue = [[start]]
+    visited = set()
+    while queue:
+        path = queue.pop(0)
+        vertex = path[-1]
+        if vertex == end:
+            return path
+        elif vertex not in visited:
+            for current_neighbour in graph_to_search.adjacent_nodes(vertex):
+                new_path = list(path)
+                new_path.append(current_neighbour)
+                queue.append(new_path)
+                if current_neighbour == end:
+                    return new_path
+            visited.add(vertex)
+
+
 # main
 def obstacle_in_node(node):
     obstacles = [[10, 10], [15, 15], [20, 20], [20, 25]]
@@ -137,8 +201,8 @@ def obstacle_in_node(node):
     return False
 
 
-map_size = 400
-step = 1
+map_size = 2000
+step = 2
 
 start_graph = time.time()
 graph = IndirectedGraph()
@@ -173,7 +237,7 @@ for y_line in range(0, map_size - step, step):
     for x_line in range(step, map_size, step):
         if not obstacle_in_node([y_line - step, x_line - step]):
             node_1 = '%s_%s' % ((y_line + step // 2), x_line + step // 2)
-            node_2 = '%s_%s' % ((y_line + step // 2 - step), x_line + step // 2 - step)
+            node_2 = '%s_%s' % ((y_line + step // 2 + step), x_line + step // 2 - step)
             graph.add_connection(node_1, node_2)
 
 print('   4L: %s' % round((time.time() - start_graph), 5))
@@ -185,6 +249,84 @@ a_star = AStar('5_5', '55_75', graph)
 path = a_star.search()
 
 print('A*   : %s' % round((time.time() - start_a), 5))
-print(path)
 
+bsf_timer = time.time()
+bfs2(graph, '5_5', '55_75')
+print('BFS  : %s' % round((time.time() - bsf_timer), 5))
 
+graph_2_timer = time.time()
+graph_2 = IndirectedGraph()
+for y_line in range(step, map_size - step, step):
+    for x_line in range(step, map_size - step, step):
+        if not obstacle_in_node([y_line, x_line]):
+            node_1 = '%s_%s' % ((y_line + step // 2), x_line + step // 2)
+            node_2 = '%s_%s' % ((y_line + step // 2 - step), x_line + step // 2 - step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % ((y_line + step // 2 - step), x_line + step // 2)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % ((y_line + step // 2 - step), x_line + step // 2 + step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % ((y_line + step // 2), x_line + step // 2 - step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % ((y_line + step // 2), x_line + step // 2 + step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % ((y_line + step // 2 + step), x_line + step // 2 - step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % ((y_line + step // 2 + step), x_line + step // 2)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % ((y_line + step // 2 + step), x_line + step // 2 + step)
+            graph_2.add_connection(node_1, node_2)
+
+print('Graph: %s' % round((time.time() - graph_2_timer), 5))
+
+graph_3_timer = time.time()
+graph_3 = IndirectedGraph()
+for y_line in range(step + step // 2, map_size - step // 2, step * 2):
+    for x_line in range(step + step // 2, map_size - step // 2, step * 2):
+        if not obstacle_in_node([y_line, x_line]):
+            node_1 = '%s_%s' % (y_line, x_line)
+            node_2 = '%s_%s' % (y_line - step, x_line - step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line - step, x_line)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line - step, x_line + step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line, x_line - step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line, x_line + step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line + step, x_line - step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line + step, x_line)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line + step, x_line + step)
+            graph_2.add_connection(node_1, node_2)
+
+for y_line in range(step // 2, map_size - step // 2, step * 2):
+    for x_line in range(step + step // 2, map_size - step // 2, step * 2):
+        if not obstacle_in_node([y_line, x_line]):
+            node_1 = '%s_%s' % (y_line, x_line)
+            node_2 = '%s_%s' % (y_line, x_line - step)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line, x_line + step)
+            graph_2.add_connection(node_1, node_2)
+
+for y_line in range(step + step // 2, map_size - step // 2, step * 2):
+    for x_line in range(step // 2, map_size - step // 2, step * 2):
+        if not obstacle_in_node([y_line, x_line]):
+            node_1 = '%s_%s' % (y_line, x_line)
+            node_2 = '%s_%s' % (y_line - step, x_line)
+            graph_2.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line + step, x_line)
+            graph_2.add_connection(node_1, node_2)
+
+print('Graph: %s' % round((time.time() - graph_3_timer), 5))
+start_a = time.time()
+a_star = AStar('5_5', '55_75', graph)
+path = a_star.search()
+
+print('A*   : %s' % round((time.time() - start_a), 5))
+
+bsf_timer = time.time()
+bfs2(graph, '5_5', '55_75')
+print('BFS  : %s' % round((time.time() - bsf_timer), 5))
