@@ -201,8 +201,8 @@ def obstacle_in_node(node):
     return False
 
 
-map_size = 2000
-step = 2
+map_size = 400
+step = 1
 
 start_graph = time.time()
 graph = IndirectedGraph()
@@ -251,7 +251,7 @@ path = a_star.search()
 print('A*   : %s' % round((time.time() - start_a), 5))
 
 bsf_timer = time.time()
-bfs2(graph, '5_5', '55_75')
+print(bfs2(graph, '5_5', '55_75'))
 print('BFS  : %s' % round((time.time() - bsf_timer), 5))
 
 graph_2_timer = time.time()
@@ -328,5 +328,5 @@ path = a_star.search()
 print('A*   : %s' % round((time.time() - start_a), 5))
 
 bsf_timer = time.time()
-bfs2(graph, '5_5', '55_75')
+print(bfs2(graph, '5_5', '55_75'))
 print('BFS  : %s' % round((time.time() - bsf_timer), 5))

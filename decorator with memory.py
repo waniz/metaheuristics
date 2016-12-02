@@ -1,18 +1,18 @@
 from functools import wraps
 
 
-def memo(func):
-    cache = {}
+def cache(func):
+    cacher = {}
 
     @wraps(func)
     def wrap(*args):
-        if args not in cache:
-            cache[args] = func(*args)
-        return cache[args]
+        if args not in cacher:
+            cacher[args] = func(*args)
+        return cacher[args]
     return wrap
 
 
-@memo
+@cache
 def fib(i):
     # O(2^n/2)
     if i < 2:
@@ -29,7 +29,7 @@ def fib_modify(i):
     return (a + b), a
 
 
-@memo
+@cache
 def simple_factorial(number):
     if number == 1:
         return 1
@@ -40,4 +40,4 @@ def simple_factorial(number):
 
 print(fib(100))
 print(fib_modify(100)[0] + fib_modify(100)[1])
-print(simple_factorial(100))
+print(simple_factorial(200))
