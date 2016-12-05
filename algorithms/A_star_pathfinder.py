@@ -286,47 +286,47 @@ for y_line in range(step + step // 2, map_size - step // 2, step * 2):
         if not obstacle_in_node([y_line, x_line]):
             node_1 = '%s_%s' % (y_line, x_line)
             node_2 = '%s_%s' % (y_line - step, x_line - step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line - step, x_line)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line - step, x_line + step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line, x_line - step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line, x_line + step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line + step, x_line - step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line + step, x_line)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line + step, x_line + step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
 
 for y_line in range(step // 2, map_size - step // 2, step * 2):
     for x_line in range(step + step // 2, map_size - step // 2, step * 2):
         if not obstacle_in_node([y_line, x_line]):
             node_1 = '%s_%s' % (y_line, x_line)
             node_2 = '%s_%s' % (y_line, x_line - step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line, x_line + step)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
 
 for y_line in range(step + step // 2, map_size - step // 2, step * 2):
     for x_line in range(step // 2, map_size - step // 2, step * 2):
         if not obstacle_in_node([y_line, x_line]):
             node_1 = '%s_%s' % (y_line, x_line)
             node_2 = '%s_%s' % (y_line - step, x_line)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
             node_2 = '%s_%s' % (y_line + step, x_line)
-            graph_2.add_connection(node_1, node_2)
+            graph_3.add_connection(node_1, node_2)
 
 print('Graph: %s' % round((time.time() - graph_3_timer), 5))
 start_a = time.time()
-a_star = AStar('5_5', '55_75', graph)
+a_star = AStar('5_5', '55_75', graph_3)
 path = a_star.search()
 
 print('A*   : %s' % round((time.time() - start_a), 5))
 
 bsf_timer = time.time()
-print(bfs2(graph, '5_5', '55_75'))
+print(bfs2(graph_3, '5_5', '55_75'))
 print('BFS  : %s' % round((time.time() - bsf_timer), 5))
