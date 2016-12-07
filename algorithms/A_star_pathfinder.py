@@ -1,12 +1,7 @@
 """
 http://gabrielgambetta.com/path2.html
 """
-
-import math
-import matplotlib.pyplot as plt
 import time
-
-plt.style.use('ggplot')
 
 
 class IndirectedGraph:
@@ -201,8 +196,8 @@ def obstacle_in_node(node):
     return False
 
 
-map_size = 400
-step = 1
+map_size = 600
+step = 70
 
 start_graph = time.time()
 graph = IndirectedGraph()
@@ -243,15 +238,16 @@ for y_line in range(0, map_size - step, step):
 print('   4L: %s' % round((time.time() - start_graph), 5))
 
 print('Graph: %s' % round((time.time() - start_graph), 5))
+print(graph.vertexes())
 
 start_a = time.time()
-a_star = AStar('5_5', '55_75', graph)
+a_star = AStar('175_245', '525_595', graph)
 path = a_star.search()
 
 print('A*   : %s' % round((time.time() - start_a), 5))
 
 bsf_timer = time.time()
-print(bfs2(graph, '5_5', '55_75'))
+bfs2(graph, '175_245', '525_595')
 print('BFS  : %s' % round((time.time() - bsf_timer), 5))
 
 graph_2_timer = time.time()
@@ -322,11 +318,61 @@ for y_line in range(step + step // 2, map_size - step // 2, step * 2):
 
 print('Graph: %s' % round((time.time() - graph_3_timer), 5))
 start_a = time.time()
-a_star = AStar('5_5', '55_75', graph_3)
+a_star = AStar('175_245', '525_595', graph_3)
 path = a_star.search()
-
 print('A*   : %s' % round((time.time() - start_a), 5))
 
 bsf_timer = time.time()
-print(bfs2(graph_3, '5_5', '55_75'))
+bfs2(graph_3, '175_245', '525_595')
+print('BFS  : %s' % round((time.time() - bsf_timer), 5))
+
+graph_4_timer = time.time()
+graph_4 = IndirectedGraph()
+for y_line in range(step + step // 2, map_size - step // 2, step * 2):
+    for x_line in range(step + step // 2, map_size - step // 2, step * 2):
+        if not obstacle_in_node([y_line, x_line]):
+            node_1 = '%s_%s' % (y_line, x_line)
+            # node_2 = '%s_%s' % (y_line - step, x_line - step)
+            # graph_4.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line - step, x_line)
+            graph_4.add_connection(node_1, node_2)
+            # node_2 = '%s_%s' % (y_line - step, x_line + step)
+            # graph_4.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line, x_line - step)
+            graph_4.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line, x_line + step)
+            graph_4.add_connection(node_1, node_2)
+            # node_2 = '%s_%s' % (y_line + step, x_line - step)
+            # graph_4.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line + step, x_line)
+            graph_4.add_connection(node_1, node_2)
+            # node_2 = '%s_%s' % (y_line + step, x_line + step)
+            # graph_4.add_connection(node_1, node_2)
+
+for y_line in range(step // 2, map_size - step // 2, step * 2):
+    for x_line in range(step + step // 2, map_size - step // 2, step * 2):
+        if not obstacle_in_node([y_line, x_line]):
+            node_1 = '%s_%s' % (y_line, x_line)
+            node_2 = '%s_%s' % (y_line, x_line - step)
+            graph_4.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line, x_line + step)
+            graph_4.add_connection(node_1, node_2)
+
+for y_line in range(step + step // 2, map_size - step // 2, step * 2):
+    for x_line in range(step // 2, map_size - step // 2, step * 2):
+        if not obstacle_in_node([y_line, x_line]):
+            node_1 = '%s_%s' % (y_line, x_line)
+            node_2 = '%s_%s' % (y_line - step, x_line)
+            graph_4.add_connection(node_1, node_2)
+            node_2 = '%s_%s' % (y_line + step, x_line)
+            graph_4.add_connection(node_1, node_2)
+
+print('Graph: %s' % round((time.time() - graph_4_timer), 5))
+start_a = time.time()
+a_star = AStar('175_245', '525_595', graph_3)
+path = a_star.search()
+print('A*   : %s' % round((time.time() - start_a), 5))
+
+bsf_timer = time.time()
+bfs2(graph_3, '175_245', '525_595')
 print('BFS  : %s' % round((time.time() - bsf_timer), 5))
