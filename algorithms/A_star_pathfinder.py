@@ -2,6 +2,7 @@
 http://gabrielgambetta.com/path2.html
 """
 import time
+import math
 
 
 class IndirectedGraph:
@@ -59,35 +60,6 @@ class Node:
 
     def y(self):
         return self.y
-
-
-class IndirectedGraphInt:
-
-    def __init__(self):
-        self.__adjacent = {}
-
-    def add_connection(self, source, destination):
-        if source in self.__adjacent:
-            self.__adjacent[source].append(destination)
-        else:
-            self.__adjacent[source] = [destination]
-
-        if destination in self.__adjacent:
-            self.__adjacent[destination].append(source)
-        else:
-            self.__adjacent[destination] = [source]
-
-    def adjacent_nodes(self, source):
-        return set(self.__adjacent[source])
-
-    def vertex_degree(self, source):
-        if source in self.__adjacent:
-            return len(self.__adjacent[source])
-        else:
-            return None
-
-    def vertexes(self):
-        return self.__adjacent.keys()
 
 
 class AStar:
@@ -196,8 +168,8 @@ def obstacle_in_node(node):
     return False
 
 
-map_size = 600
-step = 70
+map_size = 10000
+step = 10
 
 start_graph = time.time()
 graph = IndirectedGraph()
@@ -238,12 +210,11 @@ for y_line in range(0, map_size - step, step):
 print('   4L: %s' % round((time.time() - start_graph), 5))
 
 print('Graph: %s' % round((time.time() - start_graph), 5))
-print(graph.vertexes())
+# print(graph.vertexes())
 
 start_a = time.time()
-a_star = AStar('175_245', '525_595', graph)
+a_star = AStar('9575_1565', '265_9495', graph)
 path = a_star.search()
-
 print('A*   : %s' % round((time.time() - start_a), 5))
 
 bsf_timer = time.time()
