@@ -20,8 +20,7 @@ class IndirectedGraph:
         self.__edges_count += 1
 
     def adjacent_nodes(self, source):
-        return self.__adjacent[source]
-        # return set(self.__adjacent[source])
+        return set(self.__adjacent[source])
 
     def vertex_count(self):
         return self.__vertex_count

@@ -9,7 +9,7 @@ from operator import add
 
 
 def individual(length, min_, max_):
-    'Create a member of the population.'
+    """Create a member of the population."""
     return [randint(min_, max_) for _ in range(length)]
 
 
@@ -23,10 +23,10 @@ def population(count, length, min_, max_):
     max: the maximum possible value in an individual's list of values
 
     """
-    return [individual(length, min_, max_) for x in range(count)]
+    return [individual(length, min_, max_) for _ in range(count)]
 
 
-def fitness(individual_, target):
+def fitness(individual_, target_):
     """
     Determine the fitness of an individual. Higher is better.
 
@@ -34,19 +34,24 @@ def fitness(individual_, target):
     target: the target number individuals are aiming for
     """
     sum_ = reduce(add, individual_, 0)
-    return abs(target - sum_)
+    return abs(target_ - sum_)
 
 
-def grade(pop, target):
+def grade(pop, target_):
     """
     Find average fitness for a population.
     """
-    summed = reduce(add, (fitness(x, target) for x in pop))
+    summed = reduce(add, (fitness(x, target_) for x in pop))
     return summed / (len(pop) * 1.0)
 
 
-def evolve(pop, target, retain=0.2, random_select=0.05, mutate=0.01):
-    graded = [(fitness(x, target), x) for x in pop]
+def best_in_population(pop, target_):
+    graded = [(fitness(x, target_), x) for x in pop]
+    return graded[0]
+
+
+def evolve(pop, target_, retain=0.2, random_select=0.05, mutate=0.01):
+    graded = [(fitness(x, target_), x) for x in pop]
     graded = [x[1] for x in sorted(graded)]
     retain_length = int(len(graded) * retain)
     parents = graded[:retain_length]
@@ -82,16 +87,24 @@ def evolve(pop, target, retain=0.2, random_select=0.05, mutate=0.01):
     return parents
 
 
-target = 371
+target = 17522
 p_count = 100
-i_length = 5
+i_length = 18
 i_min = 0
-i_max = 100
+i_max = 1000
+max_evolutions = 5000
+delta = 1
+
+
 p = population(p_count, i_length, i_min, i_max)
 fitness_history = [grade(p, target), ]
-for i in range(100):
+for i in range(max_evolutions):
     p = evolve(p, target)
+    beste = best_in_population(p, target)[1]
+    if fitness(beste, target) <= delta:
+        print(beste, i)
+        break
     fitness_history.append(grade(p, target))
-
-for datum in fitness_history:
-    print(datum)
+#
+# for datum in fitness_history:
+#     print(datum)
