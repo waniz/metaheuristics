@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../Katas_solutions_python/.idea/Katas_solutions_python.iml" filepath="$PROJECT_DIR$/../Katas_solutions_python/.idea/Katas_solutions_python.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../keras_code/.idea/keras_code.iml" filepath="$PROJECT_DIR$/../keras_code/.idea/keras_code.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/metaheuristics.iml" filepath="$PROJECT_DIR$/.idea/metaheuristics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../tf_boost/.idea/tf_boost.iml" filepath="$PROJECT_DIR$/../tf_boost/.idea/tf_boost.iml" />
     </modules>
   </component>
 </project>
