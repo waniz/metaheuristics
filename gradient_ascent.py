@@ -2,8 +2,6 @@
 with help from: http://tillbergmann.com/blog/python-gradient-descent.html
 """
 
-import matplotlib.pyplot as plt
-
 
 def simple_function(x_list):
     y_res = []

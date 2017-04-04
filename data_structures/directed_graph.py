@@ -38,15 +38,4 @@ class DirectedGraph:
         return self.__adjacent.keys()
 
 
-# graph = DirectedGraph()
-# graph.add_connection('A', 'C')
-# graph.add_connection('A', 'D')
-# graph.add_connection('B', 'D')
-#
-# print(graph.vertex_count(), graph.edges_count())
-# print(graph.adjacent_nodes('B'))
-# print(graph.adjacent_nodes('A'))
-# print(graph.vertex_degree('C'))
-# print(graph.vertexes())
-
 
