@@ -1,4 +1,6 @@
 """
+based on:
+
 http://lethain.com/genetic-algorithms-cool-name-damn-simple/
 
 """
@@ -46,6 +48,9 @@ def grade(pop, target_):
 
 
 def best_in_population(pop, target_):
+    """
+    Get the best in a population.
+    """
     graded = [(fitness(x, target_), x) for x in pop]
     return graded[0]
 
@@ -55,22 +60,24 @@ def evolve(pop, target_, retain=0.2, random_select=0.05, mutate=0.01):
     graded = [x[1] for x in sorted(graded)]
     retain_length = int(len(graded) * retain)
     parents = graded[:retain_length]
-    # randomly add other individuals to
-    # promote genetic diversity
+
+    """ randomly add other individuals to promote genetic diversity """
     for individual_ in graded[retain_length:]:
         if random_select > random():
             parents.append(individual_)
-    # mutate some individuals
+
+    """mutate some individuals"""
     for individual_ in parents:
         if mutate > random():
             pos_to_mutate = randint(0, len(individual_) - 1)
-            # this mutation is not ideal, because it
-            # restricts the range of possible values,
-            # but the function is unaware of the min/max
-            # values used to create the individuals,
-            individual_[pos_to_mutate] = randint(
-                min(individual_), max(individual_))
-    # crossover parents to create children
+
+            """
+                this mutation is not ideal, because it restricts the range of possible values,
+                but the function is unaware of the min/max values used to create the individuals,
+            """
+            individual_[pos_to_mutate] = randint(min(individual_), max(individual_))
+
+    """ crossover parents to create children """
     parents_length = len(parents)
     desired_length = len(pop) - parents_length
     children = []
@@ -87,11 +94,11 @@ def evolve(pop, target_, retain=0.2, random_select=0.05, mutate=0.01):
     return parents
 
 
-target = 17522
-p_count = 100
-i_length = 18
+target = 19
+p_count = 1000
+i_length = 10
 i_min = 0
-i_max = 1000
+i_max = 2
 max_evolutions = 5000
 delta = 1
 
@@ -105,6 +112,6 @@ for i in range(max_evolutions):
         print(beste, i)
         break
     fitness_history.append(grade(p, target))
-#
-# for datum in fitness_history:
-#     print(datum)
+
+for datum in fitness_history:
+    print(datum)
