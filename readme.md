@@ -6,7 +6,7 @@ probably for my DRY principe.
 **Algorithms:**
     - A* search;
     - BFS;
-    - Simple Genetic algorithm.
+    - Simple Genetic algorithm;
     
 **Data structures:**
     - Directed Graph;
