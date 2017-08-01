@@ -7,11 +7,14 @@ probably for my DRY principe.
     - A* search;
     - BFS;
     - Simple Genetic algorithm;
+    - MiniMax;
+    - Alpha-beta pruning;
     
 **Data structures:**
     - Directed Graph;
     - Indirected Graph;
-    - Weighted Graph.
+    - Weighted Graph;
+    - Game Tree;
     
 **Miscellaneous:**
     - Decorators with memory (Cache);
